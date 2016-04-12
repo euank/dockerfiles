@@ -11,7 +11,7 @@ http {
     sendfile        on;
     keepalive_timeout  65;
     server {
-        listen       8081;
+        listen       ${LISTEN_ADDR:-127.0.0.1}:8081;
         server_name  localhost;
         location / {
             more_set_input_headers '${EXTRA_HEADER}';
