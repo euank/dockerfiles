@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -x
 
 
@@ -63,7 +63,7 @@ function clean_challenge {
 }
 
 function deploy_cert {
-    local DOMAIN="${1}" KEYFILE="${2}" CERTFILE="${3}" CHAINFILE="${4}"
+    local DOMAIN="${1}" KEYFILE="${2}" CERTFILE="${3}" FULLCHAINFILE="${4}" CHAINFILE="${5}" TIMESTAMP="${6}"
 
     # This hook is called once for each certificate that has been
     # produced. Here you might, for instance, copy your new certificates
@@ -77,12 +77,37 @@ function deploy_cert {
     #   The path of the file containing the private key.
     # - CERTFILE
     #   The path of the file containing the signed certificate.
-    # - CHAINFILE
+    # - FULLCHAINFILE
     #   The path of the file containing the full certificate chain.
+    # - CHAINFILE
+    #   The path of the file containing the intermediate certificate(s).
+    # - TIMESTAMP
+    #   Timestamp when the specified certificate was created.
     cp $KEYFILE /certs/ssl.key;
+    # TODO, replace this with FULLCHAINFILE if that works?
     cat $CHAINFILE $CERTFILE > /certs/ssl.pem;
     # Docker runs as root... I'm so sorry :(
     chmod 444 /certs/ssl.{key,pem}
+}
+
+function unchanged_cert {
+    local DOMAIN="${1}" KEYFILE="${2}" CERTFILE="${3}" FULLCHAINFILE="${4}" CHAINFILE="${5}"
+
+    # This hook is called once for each certificate that is still
+    # valid and therefore wasn't reissued.
+    #
+    # Parameters:
+    # - DOMAIN
+    #   The primary domain name, i.e. the certificate common
+    #   name (CN).
+    # - KEYFILE
+    #   The path of the file containing the private key.
+    # - CERTFILE
+    #   The path of the file containing the signed certificate.
+    # - FULLCHAINFILE
+    #   The path of the file containing the full certificate chain.
+    # - CHAINFILE
+    #   The path of the file containing the intermediate certificate(s).
 }
 
 HANDLER=$1; shift; $HANDLER $@
