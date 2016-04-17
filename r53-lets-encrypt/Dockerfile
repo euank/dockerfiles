@@ -6,8 +6,12 @@ RUN git clone https://github.com/lukas2511/letsencrypt.sh.git le
 WORKDIR /le
 COPY ./hook.sh /le/hook.sh
 COPY ./config.sh /le/config.sh
-RUN mkdir /ssl
-VOLUME ["/ssl"]
-VOLUME ["/le-secrets"]
+RUN mkdir /certs/ /le/certs
+# Output
+VOLUME ["/certs/"]
+# Account private key
+VOLUME ["/le-secrets/"]
+# Historical certs, so it knows if it needs to cron or not
+VOLUME ["/le/certs/"]
 COPY ./entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
