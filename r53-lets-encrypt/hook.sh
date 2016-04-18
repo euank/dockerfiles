@@ -84,8 +84,7 @@ function deploy_cert {
     # - TIMESTAMP
     #   Timestamp when the specified certificate was created.
     cp $KEYFILE /certs/ssl.key;
-    # TODO, replace this with FULLCHAINFILE if that works?
-    cat $CHAINFILE $CERTFILE > /certs/ssl.pem;
+    cp $FULLCHAINFILE /certs/ssl.pem
     # Docker runs as root... I'm so sorry :(
     chmod 444 /certs/ssl.{key,pem}
 }
