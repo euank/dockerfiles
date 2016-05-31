@@ -12,7 +12,9 @@ if [ -z "${DOMAINS}" ]; then
   exit 1
 fi
 
-[ -f /certs/dhparam.pem ] || openssl dhparam -out /certs/dhparam.pem 4096
+if [ -z "${NO_GEN_DHPARAM}" ]; then
+  [ -f /certs/dhparam.pem ] || openssl dhparam -out /certs/dhparam.pem 2048
+fi
 
 echo "${DOMAINS}" > domains.txt
 
