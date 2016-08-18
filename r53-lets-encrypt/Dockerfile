@@ -1,6 +1,6 @@
 FROM alpine
 RUN apk update && sync
-RUN apk add git openssl bash curl sed grep py-pip jq
+RUN apk add git openssl bash curl sed grep py-pip jq diffutils
 RUN pip install awscli
 RUN git clone https://github.com/lukas2511/letsencrypt.sh.git le
 WORKDIR /le
