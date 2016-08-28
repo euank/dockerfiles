@@ -14,8 +14,12 @@ RUN cd / && wget -O atheme-services.tar.bz2 https://atheme.github.io/downloads/a
     && make && make install \
     && rm -rf /atheme-services*
 
-COPY conf/atheme.conf /atheme/etc/atheme.conf
-COPY conf/atheme.motd /atheme/etc/atheme.motd
+# Because having a volume at a path where data already exists is fragile, make
+# /atheme/etc the "real" data and in the entrypoint load it from the data in
+# /atheme/base-etc. Trust me, this is better.
+RUN mkdir -p /atheme/base-etc
+COPY conf/atheme.conf /atheme/base-etc/atheme.conf
+COPY conf/atheme.motd /atheme/base-etc/atheme.motd
 COPY entrypoint.sh /entrypoint.sh
 
 # Backup this directory, it contains your services.db

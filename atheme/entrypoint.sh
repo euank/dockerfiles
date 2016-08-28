@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cp -R /atheme/base-etc/ /atheme/etc/
+
 # TODO write this in a better config language
 
 if [[ ! -f /atheme/etc/atheme.protocol.conf ]]; then
