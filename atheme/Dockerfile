@@ -10,7 +10,15 @@ RUN cd / && wget -O atheme-services.tar.bz2 https://atheme.github.io/downloads/a
     && tar xvf atheme-services.tar.bz2 \
     && rm -f /atheme-services*.tar.bz2 \
     && cd /atheme-services* \
-    && ./configure --enable-ssl --enable-contrib --with-pcre --disable-nls --prefix=/ \
+    && ./configure --enable-ssl --enable-contrib --with-pcre --disable-nls --prefix=/atheme/ \
     && make && make install \
     && rm -rf /atheme-services*
 
+COPY conf/atheme.conf /atheme/etc/atheme.conf
+COPY conf/atheme.motd /atheme/etc/atheme.motd
+COPY entrypoint.sh /entrypoint.sh
+
+# Backup this directory, it contains your services.db
+VOLUME /atheme/etc
+
+ENTRYPOINT /entrypoint.sh
