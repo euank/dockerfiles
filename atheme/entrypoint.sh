@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cp -R /atheme/base-etc/ /atheme/etc/
+cp -R /atheme/base-etc/* /atheme/etc/
 
 # TODO write this in a better config language
 
