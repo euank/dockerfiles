@@ -15,12 +15,14 @@ if [[ ! -f /atheme/etc/atheme.info.conf ]]; then
   SERVER_DESC=${SERVER_DESC:?Must specify SERVER_DESC (e.g. Foo IRC Services)}
   SERVER_NETNAME=${SERVER_NETNAME:?Must specify SERVER_NETNAME (e.g. Foo IRC)}
   SERVER_ADMIN=${SERVER_ADMIN:?Must specify SERVER_ADMIN (your nick)}
+  SERVER_NUMERIC=${SERVER_NUMERIC:-""}
   SERVER_ADMINEMAIL=${SERVER_ADMINEMAIL:?Must specify SERVER_ADMINEMAIL (your email)}
 
   cat > /atheme/etc/atheme.info.conf <<EOF
 serverinfo {
   name = "${SERVER_NAME}";
   desc = "${SERVER_DESC}";
+  numeric = "${SERVER_NUMERIC}";
   recontime = 10;
   netname = "${SERVER_NETNAME}";
   hidehostsuffix = "users.misconfigured";
@@ -74,4 +76,4 @@ if [[ -n "${LOGFILE_CHANNEL}" ]]; then
 EOF
 fi
 
-exec /atheme/bin/atheme-services
+exec /atheme/bin/atheme-services -n
