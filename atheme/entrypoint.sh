@@ -46,8 +46,8 @@ EOF
 fi
 # TODO, support multiple uplinks
 if [[ ! -f /atheme/etc/atheme.uplink.conf ]]; then
-  UPLINK_NAME=${UPLINK_NAME:?Must specify uplink name (e.g. svc.foo.bar.com)}
-  UPLINK_HOST=${UPLINK_HOST:?Must specify uplink host (e.g. svc.foo.bar.com)}
+  UPLINK_NAME=${UPLINK_NAME:?Must specify uplink name (e.g. irc.foo.bar.com)}
+  UPLINK_HOST=${UPLINK_HOST:?Must specify uplink host (e.g. irc.foo.bar.com)}
   UPLINK_PASSWORD=${UPLINK_PASSWORD:?Must specify uplink password}
   UPLINK_PORT=${UPLINK_PORT:?Must specify uplink port (e.g. 8000)}
 
