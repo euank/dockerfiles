@@ -2,7 +2,7 @@ FROM alpine
 RUN apk update && sync
 RUN apk add git openssl bash curl sed grep py-pip jq diffutils
 RUN pip install awscli
-RUN git clone https://github.com/lukas2511/letsencrypt.sh.git le
+RUN git clone https://github.com/lukas2511/dehydrated.git le
 WORKDIR /le
 COPY ./hook.sh /le/hook.sh
 COPY ./config.sh /le/config.sh

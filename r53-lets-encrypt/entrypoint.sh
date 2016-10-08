@@ -19,6 +19,6 @@ fi
 echo "${DOMAINS}" > domains.txt
 
 while true; do
-  ./letsencrypt.sh --config ./config.sh --cron
+  ./dehydrated --config ./config.sh --cron
   sleep 3600
 done
