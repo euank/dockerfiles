@@ -7,7 +7,8 @@ RUN add-apt-repository -y http://matrix.org/packages/debian/
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y matrix-synapse libpq-dev
+    apt-get install -y matrix-synapse libpq-dev \
+                       python-psycopg2
     
 RUN mkdir -p /data/{media,uploads} /secret /conf /base-conf/ /var/log/synapse
 VOLUME /data
