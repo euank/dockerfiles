@@ -22,9 +22,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y gcc make autoconf automake
 
 
 
-RUN mkdir -p /wok /kimchi
+RUN mkdir -p /wok /kimchi /gingerbase
 
-# Install wok and ginger-base
 RUN cd /wok && \
     git clone --recursive https://github.com/kimchi-project/wok.git . && \
     git checkout ${WOK_VERSION} && \
@@ -33,16 +32,25 @@ RUN cd /wok && \
     make && \
     make install
 
-# Now for kimchi
+RUN cd /gingerbase && \
+    git clone --recursive https://github.com/kimchi-project/gingerbase.git . && \
+    git checkout ${GINGER_BASE_VERSION} && \
+    git submodule update --remote && \
+    ./autogen.sh --system && \
+    make && \
+    make install
+
 RUN cd /kimchi && \
     git clone --recursive https://github.com/kimchi-project/kimchi.git . && \
     git checkout ${KIMCHI_VERSION} && \
+    git submodule update --remote && \
     ./autogen.sh --system && \
     make && \
     make install
 
 
-
 WORKDIR /wok
-CMD ["/wok/src/wokd"]
+CMD ["wokd"]
 EXPOSE 8001
+EXPOSE 8000
+EXPOSE 8010
