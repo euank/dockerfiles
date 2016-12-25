@@ -4,6 +4,9 @@ Kimchi is a virtual machine management GUI I played around with briefly.
 
 I do not use this at present, and so it is likely this docker image will become out of date and should not be trusted.
 
+For any future reader, the reason I am not planning to use Kimchi is due its userdata / cloud-config support being nonexistent as best I could tell.
+Also, it doesn't allow inputtinga pool of mac addresses to draw from, which would have been nice.
+
 Example usage:
 
 ```
