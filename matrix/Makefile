@@ -1,5 +1,5 @@
 # https://matrix.org/packages/debian/pool/main/m/matrix-synapse/
-SYNAPSE_VERSION:=0.18.7-1
+SYNAPSE_VERSION:=0.19.2-1
 
 DOCKERFILE_VERSION:=1
 
