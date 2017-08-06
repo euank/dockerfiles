@@ -1,7 +1,7 @@
-FROM debian:testing
+FROM debian:stretch
 
 RUN DEBIAN_FRONTEND=noninteractive \
-    apt-get update && apt-get install -y software-properties-common debian-keyring curl
+    apt-get update && apt-get install -y software-properties-common debian-keyring curl apt-transport-https
 RUN curl https://matrix.org/packages/debian/repo-key.asc | apt-key add -
 RUN add-apt-repository -y http://matrix.org/packages/debian/
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
