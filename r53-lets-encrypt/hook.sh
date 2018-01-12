@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 set -x
 
-
 function get_zone {
     local DOMAIN="${1}"
-    last_char=$(echo $DOMAIN | grep -o ".$")
-    if [ $last_char != "." ]; then
+    last_char=$(echo "$DOMAIN" | grep -o ".$")
+    if [[ "$last_char" != "." ]]; then
         # Normalize "example.com" to "example.com." since all hosted zones have that format in name
         DOMAIN="${DOMAIN}."
     fi
@@ -16,7 +15,7 @@ function get_zone {
         exit 1
     fi
 
-    echo $zone
+    echo "$zone"
 }
 
 
@@ -41,7 +40,7 @@ function deploy_challenge {
     #   be found in the $TOKEN_FILENAME file.
 
     # Route53 DNS challange
-    zone=$(get_zone $DOMAIN) || exit 1
+    zone=$(get_zone "${DOMAIN}") || exit 1
     aws route53 change-resource-record-sets --hosted-zone-id "$zone" --change-batch "{\"Comment\": \"lets encrypt.sh\", \"Changes\": [{\"Action\": \"UPSERT\", \"ResourceRecordSet\": {\"Name\": \"_acme-challenge.${DOMAIN}\", \"Type\": \"TXT\", \"TTL\": 0, \"ResourceRecords\": [{\"Value\": \"\\\"${TOKEN_VALUE}\\\"\"}]}}]}"
 
     # Takes some time for r53 records to propagate
@@ -58,7 +57,7 @@ function clean_challenge {
     #
     # The parameters are the same as for deploy_challenge.
 
-    zone=$(get_zone $DOMAIN) || exit 1
+    zone=$(get_zone "${DOMAIN}") || exit 1
     aws route53 change-resource-record-sets --hosted-zone-id "$zone" --change-batch "{\"Comment\": \"lets encrypt.sh\", \"Changes\": [{\"Action\": \"DELETE\", \"ResourceRecordSet\": {\"Name\": \"_acme-challenge.${DOMAIN}\", \"Type\": \"TXT\", \"TTL\": 0, \"ResourceRecords\": [{\"Value\": \"\\\"${TOKEN_VALUE}\\\"\"}]}}]}"
 }
 
@@ -83,8 +82,8 @@ function deploy_cert {
     #   The path of the file containing the intermediate certificate(s).
     # - TIMESTAMP
     #   Timestamp when the specified certificate was created.
-    cp $KEYFILE /certs/ssl.key;
-    cp $FULLCHAINFILE /certs/ssl.pem
+    cp "$KEYFILE" /certs/ssl.key;
+    cp "$FULLCHAINFILE" /certs/ssl.pem
     # Docker runs as root... I'm so sorry :(
     chmod 444 /certs/ssl.{key,pem}
 }
@@ -109,4 +108,12 @@ function unchanged_cert {
     #   The path of the file containing the intermediate certificate(s).
 }
 
-HANDLER=$1; shift; $HANDLER $@
+function startup_hook() {
+    :
+}
+
+function exit_hook() {
+    :
+}
+
+HANDLER=$1; shift; $HANDLER "$@"

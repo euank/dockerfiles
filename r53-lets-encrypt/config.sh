@@ -43,4 +43,7 @@ RENEW_DAYS="50"
 # E-mail to use during the registration (default: <unset>)
 CONTACT_EMAIL=${LE_EMAIL}
 
+BASEDIR="/le-secrets"
+DOMAINS_TXT="/domains.txt"
 PRIVATE_KEY=/le-secrets/private.pem
+ACCOUNTDIR=/le-secrets/accounts

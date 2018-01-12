@@ -16,8 +16,9 @@ if [ -z "${NO_GEN_DHPARAM}" ]; then
   [ -f /certs/dhparam.pem ] || openssl dhparam -out /certs/dhparam.pem 2048
 fi
 
-echo "${DOMAINS}" > domains.txt
+echo "${DOMAINS}" > /domains.txt
 
+./dehydrated --config ./config.sh --register --accept-terms
 while true; do
   ./dehydrated --config ./config.sh --cron
   sleep 3600
