@@ -1,17 +1,23 @@
+FROM golang:1.10.3-alpine as builder
+
+ENV LEGO_VERSION=v1.0.1
+RUN apk add --update git && mkdir -p /go/src/github.com/xenolf
+
+RUN git clone https://github.com/xenolf/lego /go/src/github.com/xenolf/lego
+WORKDIR /go/src/github.com/xenolf/lego
+RUN git checkout "${LEGO_VERSION}"
+RUN go build -ldflags="-s -X main.version=${LEGO_VERSION}"
+
 FROM alpine
-RUN apk update && sync
-RUN apk add git openssl bash curl sed grep py-pip jq diffutils
-RUN pip install awscli
-RUN git clone https://github.com/lukas2511/dehydrated.git le
+COPY --from=builder /go/src/github.com/xenolf/lego/lego /usr/bin/lego
+RUN apk add --update bash ca-certificates openssl
+
 WORKDIR /le
-COPY ./hook.sh /le/hook.sh
-COPY ./config.sh /le/config.sh
 RUN mkdir /certs/ /le/certs
 # Output
 VOLUME ["/certs/"]
 # Account private key
 VOLUME ["/le-secrets/"]
-# Historical certs, so it knows if it needs to cron or not
-VOLUME ["/le/certs/"]
+
 COPY ./entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
