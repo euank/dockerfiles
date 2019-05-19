@@ -17,8 +17,9 @@ VOLUME /secret
 
 ADD log.config /base-conf/log.config
 
-RUN useradd -m matrix
-RUN chown matrix /var/log/synapse/
-USER matrix
+RUN chown matrix-synapse /var/log/synapse
+USER matrix-synapse
 
-CMD ["python3", "-m", "synapse.app.homeserver", "--config-path", "/conf/homeserver.yaml"]
+# Check /lib/systemd/system/matrix-synapse.service
+
+CMD ["sh", "-c", ". /etc/default/matrix-synapse && cd /var/lib/matrix-synapse && exec /opt/venvs/matrix-synapse/bin/python -m synapse.app.homeserver --config-path /conf/homeserver.yaml"]
