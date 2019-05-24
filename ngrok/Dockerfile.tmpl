@@ -1,0 +1,19 @@
+FROM debian:latest as download
+
+RUN apt-get update
+RUN apt-get install -y curl unzip
+
+RUN mkdir /download
+
+RUN curl -o /download/ngrok.zip "${ngrok_url}"
+RUN cd /download && unzip /download/ngrok.zip
+
+FROM debian:latest
+
+COPY --from=download /download/ngrok /usr/local/bin/ngrok
+
+RUN mkdir -p /config
+
+COPY ./docker_entrypoint.sh /docker_entrypoint.sh
+
+ENTRYPOINT /docker_entrypoint.sh
